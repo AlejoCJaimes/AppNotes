@@ -1,4 +1,10 @@
 /**
+ * @Model or the transfer object
+ * Which holds oour data and is transferred
+ * from a lawyer to another.
+ */
+
+/**
  * Clase Usuario.
  * 
 */

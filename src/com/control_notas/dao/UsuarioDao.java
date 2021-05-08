@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @Interface
+ * This class will be abstract the datails of our
+ * class holding concrete implementatation of the persistence
+ * logic
  */
 package com.control_notas.dao;
 
