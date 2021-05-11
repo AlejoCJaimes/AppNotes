@@ -8,6 +8,10 @@ package com.control_notas.gui;
 
 import com.control_notas.dao.UsuarioDao;
 import com.control_notas.daoimpl.UsuarioDaoImpl;
+import com.control_notas.model.Administrador;
+import com.control_notas.model.Carrera;
+import com.control_notas.model.Materia;
+import com.control_notas.model.Persona;
 import com.control_notas.model.Usuario;
 import java.sql.SQLException;
 
@@ -28,10 +32,12 @@ public class AccessNotas {
         
         //(correo,clave,fechaCreacion,ID_rol,estatus)
         Usuario user1 = new Usuario(); 
-        user1.setCorreo("robert@gmail.com");
-        user1.setClave("5648");
-        user1.setIdRol(3);
-        user1.setStatus(1);
+        user1.setCorreo("dago@unipamplona.edu.co");
+        user1.setClave("5848");
+        user1.setIdRol(2);
+        user1.setStatus(0);
+        Carrera car = new Carrera();
+        Administrador admin = new Administrador();
         
         try
         {

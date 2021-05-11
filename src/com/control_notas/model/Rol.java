@@ -26,9 +26,7 @@ public class Rol {
         this.rol = rol;
     }
     
-    //Comentario de Prueba
-    
-    //Comentario de prueba VOLKMAR
+    //Getters and setters
 
     public int getIdRol() {
         return idRol;
