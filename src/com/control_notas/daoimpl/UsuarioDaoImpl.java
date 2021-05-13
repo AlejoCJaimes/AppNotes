@@ -24,21 +24,23 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
     //private Conexion conn = new Conexion("jdbc:oracle:thin:@localhost:1521:XE",credentials.getLoginCredentialsDB(),credentials.getLoginCredentialsDB());
     //public Connection cn = null;
-    private final List<String> usuarios;
+    private final List<Usuario> usuarios;
 
     public UsuarioDaoImpl() {
-        usuarios = new ArrayList<>();
+        usuarios = new ArrayList();
     }
 
     @Override
     public void insertarUsuario(Usuario _user) throws Exception {
-        //To change body of generated methods, choose Tools | Templates.
+        
+        //| Templates.
         DataHostAccess credentials = new DataHostAccess();
         Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
+        
+        
         try {
-            System.out.println(_user.getCorreo());
-            //conn.connect();
-            PreparedStatement pstmt = conn.connect().prepareStatement("INSERT INTO USUARIO (correo,clave,fechaCreacion,ID_rol,estatus) VALUES (?,?,CURRENT_TIMESTAMP,?,?)");
+           
+            PreparedStatement pstmt = conn.connect().prepareStatement("INSERT INTO USUARIOS (correo,clave,fechaCreacion,ID_rol,estatus) VALUES (?,?,CURRENT_TIMESTAMP,?,?)");
             pstmt.setString(1, _user.getCorreo());
             pstmt.setString(2, _user.getClave());
             pstmt.setInt(3, _user.getIdRol());
@@ -57,8 +59,8 @@ public class UsuarioDaoImpl implements UsuarioDao {
         DataHostAccess credentials = new DataHostAccess();
         Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
         try {
-
-            PreparedStatement pstmt = conn.connect().prepareStatement("UPDATE USUARIO SET clave = ? WHERE ID_rol = ?");
+            
+            PreparedStatement pstmt = conn.connect().prepareStatement("UPDATE USUARIOS SET clave = ? WHERE ID_usuario = ?");
             pstmt.setString(1, _user.getClave());
             pstmt.setInt(2, _user.getIdUsuario());
 
@@ -75,9 +77,9 @@ public class UsuarioDaoImpl implements UsuarioDao {
         DataHostAccess credentials = new DataHostAccess();
         Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
         try {
-
-            PreparedStatement pstmt = conn.connect().prepareStatement("DELETE FROM USUARIO WHERE ID_rol = ?");
-            pstmt.setInt(1, _user.getIdUsuario());
+            int _id = _user.getIdUsuario();
+            PreparedStatement pstmt = conn.connect().prepareStatement("DELETE FROM USUARIOS WHERE ID_rol = ?");
+            pstmt.setInt(1, _id);
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -88,30 +90,78 @@ public class UsuarioDaoImpl implements UsuarioDao {
     }
 
     @Override
-    public List<String> listarUsuarios() throws Exception {
+    public List<Usuario> listarUsuarios() throws Exception {
+        
         DataHostAccess credentials = new DataHostAccess();
         Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
-
+        
+        List<Usuario> lista = null;
+        String query = "SELECT ID_USUARIO,CORREO,";
+        query += "CLAVE,TO_CHAR(fechacreacion,'DD-MON-YYYY HH:MI AM') AS FECHA_CREACION, ID_ROL,";
+        query += "ESTATUS ";
+        query += "FROM USUARIOS WHERE ID_usuario = ?";
         try {
-            Statement stmt = conn.connect().createStatement();
-            ResultSet rset = stmt.executeQuery("SELECT * FROM usuario");
-
+            
+            PreparedStatement pstmt = conn.connect().prepareStatement(query);
+            ResultSet rset = pstmt.executeQuery();
+            
+            lista = usuarios;
             while (rset.next()) {
-                System.out.println(rset.getString(1));
-
+                Usuario _user = new Usuario();
+                _user.setIdUsuario(rset.getInt("ID_USUARIO"));
+                _user.setCorreo(rset.getString("CORREO"));
+                _user.setFechaCreacion(rset.getString("FECHA_CREACION"));
+                _user.setClave(rset.getString("CLAVE"));
+                _user.setIdRol(rset.getInt("ID_ROL"));
+                lista.add(_user);
             }
+            
+            
+            
         } catch (SQLException e) {
             throw e;
         } finally {
             conn.disconnect();
         }
 
-        return usuarios;
+        return lista;
     }
 
     @Override
     public Usuario obtenerUsuario(int idUsuario) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       DataHostAccess credentials = new DataHostAccess();
+        Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
+        
+        Usuario _user = new Usuario();
+        
+        String query = "SELECT ID_USUARIO,CORREO,";
+        query += "CLAVE,TO_CHAR(fechacreacion,'DD-MON-YYYY HH:MI AM') AS FECHA_CREACION, ID_ROL,";
+        query += "ESTATUS ";
+        query += "FROM USUARIOS WHERE ID_usuario = ?";
+        try {
+            
+            PreparedStatement pstmt = conn.connect().prepareStatement(query);
+            pstmt.setInt(1, idUsuario);
+            
+            ResultSet rset = pstmt.executeQuery();
+            
+            while (rset.next()) {
+                
+                _user.setIdUsuario(rset.getInt("ID_USUARIO"));
+                _user.setCorreo(rset.getString("CORREO"));
+                _user.setFechaCreacion(rset.getString("FECHA_CREACION"));
+                _user.setClave(rset.getString("CLAVE"));
+                _user.setIdRol(rset.getInt("ID_ROL"));
+                
+            }
+
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            conn.disconnect();
+        }
+        
+        return _user;
     }
     
 }

@@ -6,12 +6,11 @@
  */
 package com.control_notas.gui;
 
+import com.control_notas.dao.AdministradorDao;
 import com.control_notas.dao.UsuarioDao;
+import com.control_notas.daoimpl.AdministradorDaoImpl;
 import com.control_notas.daoimpl.UsuarioDaoImpl;
 import com.control_notas.model.Administrador;
-import com.control_notas.model.Carrera;
-import com.control_notas.model.Materia;
-import com.control_notas.model.Persona;
 import com.control_notas.model.Usuario;
 import java.sql.SQLException;
 
@@ -27,22 +26,47 @@ public class AccessNotas {
      */
     public static void main (String [] args) throws  Exception {
        
-        //Objeto para manipular el DAO
-        UsuarioDao usuarioDao = new UsuarioDaoImpl();
+//        //Objeto para manipular el DAO
+//        UsuarioDao usuarioDao = new UsuarioDaoImpl();
+//        
+////        //(correo,clave,fechaCreacion,ID_rol,estatus)
+//        Usuario user1 = new Usuario(); 
+////        user1.setIdUsuario(3);
         
-        //(correo,clave,fechaCreacion,ID_rol,estatus)
-        Usuario user1 = new Usuario(); 
-        user1.setCorreo("dago@unipamplona.edu.co");
-        user1.setClave("5848");
-        user1.setIdRol(2);
-        user1.setStatus(0);
-        Carrera car = new Carrera();
-        Administrador admin = new Administrador();
+         //ADMIN NUM_IDENTIFICACION,NOMBRE,APELLIDO,CARGO,ID_USUARIO
+         AdministradorDao adminDao = new AdministradorDaoImpl();
+         Administrador admin = new Administrador();
+         admin.setNum_identificacion("1005062032");
+         admin.setNombre("Administrador");
+         admin.setApellido("TEST");
+         admin.setCargo("Supervisor General");
+         admin.setIdUsuario(1);
+         
+         
+        
         
         try
         {
-         usuarioDao.insertarUsuario(user1);
-            System.out.println("Usuario Insertado Correctamente");
+//            user1 = usuarioDao.obtenerUsuario(1);
+//            System.out.println(user1.getCorreo());
+//            System.out.println(user1.getFechaCreacion());
+////         List<Usuario> _lista = usuarioDao.listarUsuarios();
+////         
+////         _lista.stream().map((model) -> {
+////             System.out.println("ID: " + model.getIdUsuario());
+////                return model;
+////            }).map((model) -> {
+////                System.out.println("Email: " + model.getCorreo());
+////                return model;
+////            }).map((model) -> {
+////                System.out.println("Clave: " + model.getClave());
+////                return model;
+////            }).forEachOrdered((model) -> {
+////                System.out.println("ID_rol: " + model.getIdRol());
+////            });
+//            System.out.println("Usuario traido Correctamente");
+            adminDao.insertarAdministrador(admin);
+            System.out.println("Admin ingresado correctamente");
         }
         catch(SQLException e)
         {

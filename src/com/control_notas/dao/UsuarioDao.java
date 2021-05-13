@@ -24,7 +24,7 @@ public interface UsuarioDao {
     void borrarUsuario(Usuario _user) throws Exception;
 
     //SEARCH
-    List<String> listarUsuarios() throws Exception;
+    List<Usuario> listarUsuarios() throws Exception;
 
     Usuario obtenerUsuario(int idUsuario) throws Exception;
 

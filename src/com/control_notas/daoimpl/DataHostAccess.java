@@ -43,9 +43,9 @@ public class DataHostAccess {
             System.err.println("ERR01: DataHostText --- Access" + ex);
         }
         //DataAccess
-        String host;
+        
 
-        return host = getToken(aux);
+        return  getToken(aux);
 
     }
     
@@ -72,9 +72,9 @@ public class DataHostAccess {
             System.err.println("ERR01: DataHostText --- Access" + ex);
         }
         //DataAccess
-        String url;
+        
 
-        return url = getURL(aux);
+        return getURL(aux);
         
     }
     

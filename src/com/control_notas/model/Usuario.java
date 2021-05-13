@@ -8,6 +8,7 @@ public class Usuario extends Rol {
     String correo, clave, fechaCreacion;
     int status;
     
+    
     //Constructor por defecto
     public Usuario () {};
     
