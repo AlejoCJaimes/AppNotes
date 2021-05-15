@@ -26,28 +26,28 @@ public class AccessNotas {
      */
     public static void main (String [] args) throws  Exception {
        
-//        //Objeto para manipular el DAO
-//        UsuarioDao usuarioDao = new UsuarioDaoImpl();
-//        
-////        //(correo,clave,fechaCreacion,ID_rol,estatus)
-//        Usuario user1 = new Usuario(); 
-////        user1.setIdUsuario(3);
+        //Objeto para manipular el DAO
+        UsuarioDao usuarioDao = new UsuarioDaoImpl();
+        
+//        //(correo,clave,fechaCreacion,ID_rol,estatus)
+        Usuario user1 = new Usuario(); 
+        user1.setIdUsuario(4);
         
          //ADMIN NUM_IDENTIFICACION,NOMBRE,APELLIDO,CARGO,ID_USUARIO
-         AdministradorDao adminDao = new AdministradorDaoImpl();
-         Administrador admin = new Administrador();
-         admin.setNum_identificacion("1005062032");
-         admin.setNombre("Administrador");
-         admin.setApellido("TEST");
-         admin.setCargo("Supervisor General");
-         admin.setIdUsuario(1);
+//         AdministradorDao adminDao = new AdministradorDaoImpl();
+//         Administrador admin = new Administrador();
+//         admin.setNum_identificacion("1005062032");
+//         admin.setNombre("Administrador");
+//         admin.setApellido("TEST");
+//         admin.setCargo("Supervisor General");
+//         admin.setIdUsuario(1);
          
          
         
         
         try
         {
-//            user1 = usuarioDao.obtenerUsuario(1);
+           usuarioDao.borrarUsuario(user1);
 //            System.out.println(user1.getCorreo());
 //            System.out.println(user1.getFechaCreacion());
 ////         List<Usuario> _lista = usuarioDao.listarUsuarios();
@@ -65,7 +65,7 @@ public class AccessNotas {
 ////                System.out.println("ID_rol: " + model.getIdRol());
 ////            });
 //            System.out.println("Usuario traido Correctamente");
-            adminDao.insertarAdministrador(admin);
+            //adminDao.insertarAdministrador(admin);
             System.out.println("Admin ingresado correctamente");
         }
         catch(SQLException e)

@@ -25,5 +25,5 @@ public interface AdministradorDao {
     //SEARCH
     List<Administrador> listarAdministradores() throws Exception;
 
-    Administrador obtenerAdmin(int idUsuario) throws Exception;
+    Administrador obtenerAdmin(int idPersona) throws Exception;
 }
