@@ -6,10 +6,9 @@
 package com.control_notas.daoimpl;
 
 import com.control_notas.dao.EstudianteDAO;
-import com.control_notas.dao.UsuarioDao;
+
 
 import com.control_notas.model.Estudiante;
-import com.control_notas.model.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,99 +26,10 @@ public class EstudianteDaoImpl implements EstudianteDAO {
     public EstudianteDaoImpl() {
         estudiantes = new ArrayList();
     }
-
-    @Override
-    public void insertarEstudiante(Estudiante _est) throws Exception {
-        // Templates.
-        DataHostAccess credentials = new DataHostAccess();
-        Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
-
-        try {
-
-            PreparedStatement pstmt = conn.connect().prepareStatement("INSERT INTO PERSONAS (NUM_IDENTIFICACION,NOMBRE,APELLIDO,NUM_SEMESTRE,COD_CARRERA,ID_USUARIO) VALUES (?,?,?,?,?,?)");
-            pstmt.setString(1, _est.getNum_identificacion());
-            pstmt.setString(2, _est.getNombre());
-            pstmt.setString(3, _est.getApellido());
-            pstmt.setInt(4, _est.getNum_semestre());
-            pstmt.setString(5, _est.getCod_carrera());
-            pstmt.setInt(6, _est.getIdUsuario());
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            conn.disconnect();
-        }
-    }
-
-    @Override
-    public void actualizarEstudiante(Estudiante _est) throws Exception {
-        // Templates.
-        DataHostAccess credentials = new DataHostAccess();
-        Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
-
-        String query = "UPDATE PERSONAS";
-        query += "NOMBRE = ?,APELLIDO = ?,NUM_SEMESTRE = ?,COD_CARRERA = ?";
-        query += "WHERE ID_USUARIO = ?";
-        try {
-
-            PreparedStatement pstmt = conn.connect().prepareStatement(query);
-            pstmt.setString(1, _est.getNombre());
-            pstmt.setString(2, _est.getApellido());
-            pstmt.setInt(3, _est.getNum_semestre());
-            pstmt.setString(4, _est.getCod_carrera());
-            pstmt.setInt(5, _est.getIdUsuario());
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            conn.disconnect();
-        }
-    }
-
-    @Override
-    public void borrarEstudiante(Estudiante _est) throws Exception {
-        // Templates.
-        DataHostAccess credentials = new DataHostAccess();
-        Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
-
-        try {
-            int _id = _est.getIdUsuario();
-
-            //Eliminar Persona
-            PreparedStatement pstmt = conn.connect().prepareStatement("DELETE FROM PERSONAS WHERE ID_USUARIO = ?");
-            pstmt.setInt(1, _id);
-
-            //Dao Usuarios
-            UsuarioDao usuarioDao = new UsuarioDaoImpl();
-
-            Usuario _user = usuarioDao.obtenerUsuario(_id);
-            //Eliminar Usuario
-            usuarioDao.borrarUsuario(_user);
-
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            conn.disconnect();
-        }
-    }
-
     @Override
     public List<Estudiante> listarEstudiantes() throws Exception {
         DataHostAccess credentials = new DataHostAccess();
         Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
-//                ID_PERSONA                                NOT NULL NUMBER(10)
-//         NUM_IDENTIFICACION                        NOT NULL VARCHAR2(15)
-//         NOMBRE                                    NOT NULL VARCHAR2(60)
-//         APELLIDO                                  NOT NULL VARCHAR2(60)
-//         CARGO                                              VARCHAR2(100)
-//         COD_CARRERA                                        VARCHAR2(10)
-//         ID_USUARIO                                NOT NULL NUMBER(10)
-//         NUM_SEMESTRE                                       NUMBER(3)
-//         TITULO_DOC
-        //query
         int rolUsuario = 2;
         String query = "SELECT ID_PERSONA AS ID_ESTUDIANTE, NUM_IDENTIFICACION AS IDENTIFICACION, NOMBRE, ";
         query += "APELLIDO, NUM_SEMESTRE AS SEMESTRE,COD_CARRERA, ID_USUARIO";

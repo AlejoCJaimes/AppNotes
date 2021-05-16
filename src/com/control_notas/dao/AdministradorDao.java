@@ -7,6 +7,8 @@
 package com.control_notas.dao;
 
 import com.control_notas.model.Administrador;
+import com.control_notas.model.Docente;
+import com.control_notas.model.Estudiante;
 import java.util.List;
 
 /**
@@ -16,11 +18,35 @@ import java.util.List;
 public interface AdministradorDao {
     //Declaracion de los métodos para acceder a la base de datos.
     // Methods
+    
+    
+    //CRUD ADMINISTRADOR
+    
     void insertarAdministrador(Administrador _admin) throws Exception;
     
     void actualizarAdministrador(Administrador _admin) throws Exception;
 
     void borrarAdministrador(Administrador _admin) throws Exception;
+    
+    
+    //CRUD DOCENTE
+    void insertarDocente (Docente _doc) throws Exception;
+    
+
+    //CRUD ESTUDIANTE
+    
+    void insertarEstudiante(Estudiante _est) throws Exception;
+    
+    void actualizarEstudiante(Estudiante _est) throws Exception;
+
+    void borrarEstudiante(Estudiante _est) throws Exception;
+    
+    
+    
+   
+    
+    
+    
 
     //SEARCH
     List<Administrador> listarAdministradores() throws Exception;

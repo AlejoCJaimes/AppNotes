@@ -54,7 +54,7 @@ public class Conexion {
                 ods.setUser(user);
                 ods.setPassword(password);
                 conn = ods.getConnection();
-                System.out.println("LOG01");
+                System.out.println("LOG01");  //Satisfactorio
 
             }
 
@@ -70,7 +70,7 @@ public class Conexion {
                 if (!conn.isClosed()) {
                     conn.close(); //Close the connecction
                     ods.close(); //Close Oracle Data Source
-                    System.out.println("LOG02");
+                    System.out.println("LOG02"); //Desconectado
                 }
             }
 

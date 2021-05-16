@@ -16,7 +16,7 @@ import java.util.List;
 public interface UsuarioDao {
 
     //Declaracion de los métodos para acceder a la base de datos.
-    // Methods
+    // Methods+
     void insertarUsuario(Usuario _user) throws Exception;
 
     void actualizarUsuario(Usuario _user) throws Exception;

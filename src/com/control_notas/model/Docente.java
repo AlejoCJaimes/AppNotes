@@ -17,18 +17,18 @@ public class Docente extends Persona{
     //Constructor por defecto
     public Docente () {};
     //Constructor con parámetros
-    public Docente(String cargo, int ID_persona, String num_identificacion, String nombre, String apellido, int idUsuario, String correo, String clave, String fechaCreacion, int status, int idRol, String rol) {
+    public Docente(String titulo_docente, int ID_persona, String num_identificacion, String nombre, String apellido, int idUsuario, String correo, String clave, String fechaCreacion, int status, int idRol, String rol) {
         super(ID_persona, num_identificacion, nombre, apellido, idUsuario, correo, clave, fechaCreacion, status, idRol, rol);
-        this.titulo_docente = cargo;
+        this.titulo_docente = titulo_docente;
     }
     //Getters and Setters
 
-    public String getCargo() {
+    public String getTituloDocente() {
         return titulo_docente;
     }
 
-    public void setCargo(String cargo) {
-        this.titulo_docente = cargo;
+    public void setTituloDocente(String titulo_docente) {
+        this.titulo_docente = titulo_docente;
     }
     
     

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.control_notas.dao.AdministradorDao;
 import com.control_notas.dao.UsuarioDao;
+import com.control_notas.model.Docente;
+import com.control_notas.model.Estudiante;
 import com.control_notas.model.Usuario;
 import java.sql.ResultSet;
 
@@ -22,7 +24,13 @@ public class AdministradorDaoImpl implements AdministradorDao{
     public AdministradorDaoImpl() {
         administradores = new ArrayList();
     }
-
+    
+    
+    /**
+     * @method CRUD ADMIN
+     * @param _admin
+     * @throws Exception 
+     */
     @Override
     public void insertarAdministrador(Administrador _admin) throws Exception {
          // Templates.
@@ -98,7 +106,117 @@ public class AdministradorDaoImpl implements AdministradorDao{
             conn.disconnect();
         }
     }
+    /**
+     * @param _est
+     * @throws Exception
+     * @method CRUD ESTUDIANTE
+     */
+     @Override
+    public void insertarEstudiante(Estudiante _est) throws Exception {
+        // Templates.
+        DataHostAccess credentials = new DataHostAccess();
+        Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
 
+        try {
+
+            PreparedStatement pstmt = conn.connect().prepareStatement("INSERT INTO PERSONAS (NUM_IDENTIFICACION,NOMBRE,APELLIDO,NUM_SEMESTRE,COD_CARRERA,ID_USUARIO) VALUES (?,?,?,?,?,?)");
+            pstmt.setString(1, _est.getNum_identificacion());
+            pstmt.setString(2, _est.getNombre());
+            pstmt.setString(3, _est.getApellido());
+            pstmt.setInt(4, _est.getNum_semestre());
+            pstmt.setString(5, _est.getCod_carrera());
+            pstmt.setInt(6, _est.getIdUsuario());
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            conn.disconnect();
+        }
+    }
+
+    @Override
+    public void actualizarEstudiante(Estudiante _est) throws Exception {
+        // Templates.
+        DataHostAccess credentials = new DataHostAccess();
+        Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
+
+        String query = "UPDATE PERSONAS";
+        query += "NOMBRE = ?,APELLIDO = ?,NUM_SEMESTRE = ?,COD_CARRERA = ?";
+        query += "WHERE ID_USUARIO = ?";
+        try {
+
+            PreparedStatement pstmt = conn.connect().prepareStatement(query);
+            pstmt.setString(1, _est.getNombre());
+            pstmt.setString(2, _est.getApellido());
+            pstmt.setInt(3, _est.getNum_semestre());
+            pstmt.setString(4, _est.getCod_carrera());
+            pstmt.setInt(5, _est.getIdUsuario());
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            conn.disconnect();
+        }
+    }
+
+    @Override
+    public void borrarEstudiante(Estudiante _est) throws Exception {
+        // Templates.
+        DataHostAccess credentials = new DataHostAccess();
+        Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
+
+        try {
+            int _id = _est.getIdUsuario();
+
+            //Eliminar Persona
+            PreparedStatement pstmt = conn.connect().prepareStatement("DELETE FROM PERSONAS WHERE ID_USUARIO = ?");
+            pstmt.setInt(1, _id);
+
+            //Dao Usuarios
+            UsuarioDao usuarioDao = new UsuarioDaoImpl();
+
+            Usuario _user = usuarioDao.obtenerUsuario(_id);
+            //Eliminar Usuario
+            usuarioDao.borrarUsuario(_user);
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            conn.disconnect();
+        }
+    }
+    
+    /**
+     * @param _doc
+     * @throws Exception
+     * @method CRUD DOCENTE
+     */
+    @Override
+    public void insertarDocente(Docente _doc) throws Exception {
+         // Templates.
+        DataHostAccess credentials = new DataHostAccess();
+        Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
+        
+        
+        try {
+            
+            PreparedStatement pstmt = conn.connect().prepareStatement("INSERT INTO PERSONAS (NUM_IDENTIFICACION,NOMBRE,APELLIDO,TITULO_DOC,ID_USUARIO) VALUES (?,?,?,?,?)");
+            pstmt.setString(1, _doc.getNum_identificacion());
+            pstmt.setString(2, _doc.getNombre());
+            pstmt.setString(3, _doc.getApellido());
+            pstmt.setString(4, _doc.getTituloDocente());
+            pstmt.setInt(5, _doc.getIdUsuario());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            conn.disconnect();
+        }
+    }
+    
     @Override
     public List<Administrador> listarAdministradores() throws Exception {
         

@@ -10,11 +10,14 @@ package com.control_notas.model;
  * 
 */
 public class Clases extends Docente {
-    //Atributos
+    
+    //Atributos de clase
     int ID_clases, semestre_clase;
     String cod_carrera;
     
-    
+    //Atributos auxiliares
+    int numero_estudiantes;
+    Materia materia;
     
     //Constructor por defecto
     public Clases () {};
@@ -27,7 +30,27 @@ public class Clases extends Docente {
         this.semestre_clase = semestre_clase;
     }
     
+    //Getters and Setters auxiliares
+    public int getNumero_estudiantes() {
+        return numero_estudiantes;
+    }
+
+    public void setNumero_estudiantes(int numero_estudiantes) {
+        this.numero_estudiantes = numero_estudiantes;
+    }
+
+    public Materia getMateria() {
+        return materia;
+    }
+
+    public void setMateria(Materia materia) {
+        this.materia = materia;
+    }
+    
+    
     //Getters and Setters
+    
+    
     public int getSemestre_clase() {
         return semestre_clase;
     }
