@@ -1,5 +1,6 @@
 package com.control_notas.gui;
 
+import com.control_notas.model.Docente;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -16,12 +17,12 @@ public class jPanelInformationDocente extends JPanel{
 
     private final JLabel logout = new JLabel();
 
-    public jPanelInformationDocente(String pNombre, String pApellidos, String pIdentificacion, String correoElectronico, int cursosCargo) {
-        this.inicializarRecursos(pNombre, pApellidos, pIdentificacion, correoElectronico, cursosCargo);
+    public jPanelInformationDocente(Docente _doc, int cursos) {
+        this.inicializarRecursos(_doc, cursos);
         this.inicializarEntorno();
     }
 
-    private void inicializarRecursos(String pNombre, String pApellidos, String pIdentificacion, String correoElectronico, int cursosCargo) {
+    private void inicializarRecursos(Docente _doc, int cursosCargo) {
         //Alineación de elementos en el eje Y
         Box box = new Box(BoxLayout.Y_AXIS);
         //Imagen de Usuario
@@ -34,16 +35,24 @@ public class jPanelInformationDocente extends JPanel{
         //___________________________________________________________
         box.add(imageUser);
         //___________________________________________________________
-        JLabel correo = new JLabel(correoElectronico);
+        JLabel correo = new JLabel("\n"+_doc.getCorreo());
         correo.setAlignmentX(Component.CENTER_ALIGNMENT);
         correo.setForeground(Color.WHITE);
-        //___________________________________________________________
         box.add(correo);
+        //___________________________________________________________
+        
+        JLabel titulo = new JLabel(_doc.getTituloDocente());
+        titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titulo.setForeground(Color.WHITE);
+        box.add(titulo);
+        //___________________________________________________________
+        
         //Espaciado entre elementos
         box.add(Box.createVerticalStrut(100));
         //___________________________________________________________
         //Agregarmos la informacion personal
-        box.add(getPanelDatos(pNombre, pApellidos, pIdentificacion, correoElectronico, cursosCargo));
+        
+        box.add(getPanelDatos(_doc, cursosCargo));
         //Button de Salir       
         box.add(Box.createVerticalStrut(100));
         box.add(logout);
@@ -66,19 +75,19 @@ public class jPanelInformationDocente extends JPanel{
 //        
 //        return(cerrarSesion);
 //    }
-    private JPanel getPanelDatos(String pNombre, String pApellidos, String pIdentificacion, String correoElectronico, int cursosCargo) {
+    private JPanel getPanelDatos(Docente _doc, int cursosCargo) {
         JPanel datos = new JPanel();
         datos.setLayout(new BoxLayout(datos, BoxLayout.PAGE_AXIS));
 
-        jPanelRefInformation p1 = new jPanelRefInformation(new JLabel("Identificación: "), new JTextField(pIdentificacion));
+        jPanelRefInformation p1 = new jPanelRefInformation(new JLabel("Identificación: "), new JTextField(_doc.getNum_identificacion()));
         p1.setLayout(new FlowLayout(FlowLayout.CENTER));
         datos.add(p1);
 
-        jPanelRefInformation p2 = new jPanelRefInformation(new JLabel("Nombres: "), new JTextField(pNombre));
+        jPanelRefInformation p2 = new jPanelRefInformation(new JLabel("Nombres: "), new JTextField(_doc.getNombre()));
         p2.setLayout(new FlowLayout(FlowLayout.CENTER));
         datos.add(p2);
 
-        jPanelRefInformation p3 = new jPanelRefInformation(new JLabel("Apellidos: "), new JTextField(pApellidos));
+        jPanelRefInformation p3 = new jPanelRefInformation(new JLabel("Apellidos: "), new JTextField(_doc.getApellido()));
         p3.setLayout(new FlowLayout(FlowLayout.CENTER));
         datos.add(p3);
 

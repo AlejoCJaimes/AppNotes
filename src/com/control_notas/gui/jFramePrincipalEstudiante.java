@@ -14,7 +14,7 @@ import javax.swing.JFrame;
  */
 public class jFramePrincipalEstudiante extends JFrame{
     
-    public jFramePrincipalEstudiante() 
+    public jFramePrincipalEstudiante(int idUsuario) 
     {
         inicializarEntorno();
     }
@@ -23,7 +23,8 @@ public class jFramePrincipalEstudiante extends JFrame{
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(url));
         this.setTitle("Estudiante (Demo Personalizado)");
         this.setSize(800, 800);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.dispose();
     }
      private String obtenerRutaIcono () {
         String ruta = ".\\src\\com\\control_notas\\gui\\images\\icon_application.png";

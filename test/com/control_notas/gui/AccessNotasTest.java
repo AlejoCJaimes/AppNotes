@@ -39,9 +39,10 @@ public class AccessNotasTest {
 
     /**
      * Test of main method, of class AccessNotas.
+     * @throws java.lang.Exception
      */
     @Test
-    public void testMain() {
+    public void testMain() throws Exception {
         System.out.println("main");
         String[] args = null;
         AccessNotas.main(args);
