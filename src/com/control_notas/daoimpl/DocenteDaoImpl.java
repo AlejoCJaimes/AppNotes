@@ -24,6 +24,7 @@ import java.util.List;
 public class DocenteDaoImpl implements DocenteDao{
 
     private final List<Clases> datos_dashboard;
+    
     private final List<Notas> estudiantes_cursos;
     
     
@@ -41,7 +42,7 @@ public class DocenteDaoImpl implements DocenteDao{
         Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
 
         try {
-
+            
             PreparedStatement pstmt = conn.connect().prepareStatement("INSERT INTO NOTAS (CORTE,CALIFICACION,ID_ESTUDIANTE,ID_DOCENTE,ID_CLASES) VALUES (?,?,?,?,?)");
             pstmt.setFloat(1, _nota.getCorte());
             pstmt.setFloat(2, _nota.getCalificacion()); 
@@ -94,21 +95,25 @@ public class DocenteDaoImpl implements DocenteDao{
         Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
 
     
-        String query = "SELECT p.nombre DOCENTE, m.nombre MATERIA, ces.id_clases ID_CLASES, COUNT(*) ESTUDIANTES";
-        query +=" FROM MATERIAS m ";
-        query +=" INNER JOIN CLASES c ON c.id_materia = m.id_materia";
-        query +=" INNER JOIN CLASES_ESTUDIANTES ces ON ces.id_clases = c.id_clases";
-        query +=" INNER JOIN PERSONAS p ON p.id_persona = c.id_docente";
-        query +=" INNER JOIN USUARIOS u ON u.id_usuario = p.id_usuario ";
-        query +=" INNER JOIN ROLES r ON r.id_rol = u.id_rol";
-        query +=" GROUP BY p.nombre,m.nombre,ces.id_clases, r.id_rol, p.id_persona";
-        query +=" HAVING p.id_persona = ?";
+        String query = " SELECT m.nombre MATERIA, c.id_clases ID_CURSO, ces.id_clases ID_CLASE, c.semestre SEMESTRE, COUNT(*) ESTUDIANTES ";
+        query += " FROM MATERIAS m "; 
+        query += " INNER JOIN CLASES c ON c.id_materia = m.id_materia ";
+        query += " INNER JOIN CLASES_ESTUDIANTES ces ON ces.id_clases = c.id_clases ";
+        query += " GROUP BY m.nombre, c.semestre, c.id_clases, c.id_docente, ces.id_clases ";
+        query += " HAVING c.id_docente = ? "; 
+        query += " UNION ";
+        query += " SELECT  m.nombre MATERIA, c.id_clases ID_CURSO, (SELECT 0 FROM DUAL)ID_CLASES, c.semestre SEMESTRE, (SELECT 0 FROM DUAL) ESTUDIANTES ";
+        query += " FROM MATERIAS m "; 
+        query += " INNER JOIN CLASES c ON c.id_materia = m.id_materia ";
+        query += " GROUP BY m.nombre, c.semestre, c.id_clases, c.id_docente ";
+        query += " HAVING c.id_docente = ? AND c.id_clases NOT IN (SELECT ces.id_clases FROM CLASES_ESTUDIANTES ces) ";
         
         //Creaciobn de lista
         List<Clases> _lista = null;
         try {
             PreparedStatement pstmt = conn.connect().prepareStatement(query);
             pstmt.setInt(1, idDocente);
+            pstmt.setInt(2, idDocente);
             ResultSet rset = pstmt.executeQuery();
 
             //Traer datos
@@ -119,15 +124,12 @@ public class DocenteDaoImpl implements DocenteDao{
             while (rset.next()) {
                 Clases _clases = new Clases();
                 Materia _materia = new Materia();
-                System.out.println(rset.getString("DOCENTE"));
-                System.out.println(rset.getString("MATERIA"));
-                System.out.println(rset.getInt("ID_CLASES"));
-                System.out.println(rset.getInt("ESTUDIANTES"));
                 
-                _clases.setNombre(rset.getString("DOCENTE"));
                 _materia.setNombre(rset.getString("MATERIA"));
                 _clases.setMateria(_materia);
-                _clases.setID_clases(rset.getInt("ID_CLASES"));
+                _clases.setID_clases(rset.getInt("ID_CLASE"));
+                _clases.setID_curso(rset.getInt("ID_CURSO"));
+                _clases.setSemestre_clase(rset.getInt("SEMESTRE"));
                 _clases.setNumero_estudiantes(rset.getInt("ESTUDIANTES"));
                _lista.add(_clases);
             }
@@ -143,7 +145,43 @@ public class DocenteDaoImpl implements DocenteDao{
 
     @Override
     public Docente obtenerDocente(int idPersona) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        DataHostAccess credentials = new DataHostAccess();
+        Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
+        
+       //query
+        int rolUsuario = 2;
+        String query = " SELECT p.ID_PERSONA AS ID_DOCENTE, p.NUM_IDENTIFICACION AS IDENTIFICACION, p.NOMBRE as NOMBRE, ";
+        query += " p.APELLIDO AS APELLIDO, p.TITULO_DOC AS TITULO, u.ID_USUARIO AS ID_USER, u.CORREO AS CORREO ";
+        query += " FROM PERSONAS p ";
+        query += " INNER JOIN USUARIOS u ON p.ID_USUARIO = u.ID_USUARIO ";
+        query += " WHERE u.ID_ROL = ? AND p.ID_PERSONA = ? ";
+        
+        //Instancia docente
+        Docente _doc = new Docente();
+        
+        try {
+            PreparedStatement pstmt = conn.connect().prepareStatement(query);
+            pstmt.setInt(1, rolUsuario);
+            pstmt.setInt(2, idPersona);
+            ResultSet rset = pstmt.executeQuery();
+            
+            while(rset.next())
+            {
+                _doc.setID_persona(rset.getInt("ID_DOCENTE"));
+                _doc.setNum_identificacion(rset.getString("IDENTIFICACION"));
+                _doc.setNombre(rset.getString("NOMBRE"));
+                _doc.setApellido(rset.getString("APELLIDO"));
+                _doc.setTituloDocente(rset.getString("TITULO"));
+                _doc.setIdUsuario(rset.getInt("ID_USER"));
+                _doc.setCorreo(rset.getString("CORREO"));
+            }
+        }catch(SQLException e)
+        {
+            throw e;
+        } finally {
+            conn.disconnect();
+        }
+       return _doc;
     }
 
     @Override
@@ -261,6 +299,85 @@ public class DocenteDaoImpl implements DocenteDao{
 
         return _lista; 
     }
+
+    @Override
+    public int cursosDocente(int IdDocente) throws Exception {
+       
+        DataHostAccess credentials = new DataHostAccess();
+        Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(),credentials.getLoginCredentialsDB());
+       
+        String query = " SELECT COUNT(*) ";
+              query += " FROM CLASES ";
+              query += " WHERE id_docente = ? ";
+        
+        int num_cursos = 0;
+        try
+        {
+            PreparedStatement pstmt = conn.connect().prepareStatement(query);
+            pstmt.setInt(1, IdDocente);
+            ResultSet rset = pstmt.executeQuery();
+
+            while (rset.next()) {
+                num_cursos = rset.getInt(1);
+            }
+
+         
+       
+        }catch(SQLException e)
+        {
+            throw e;
+        }finally
+        {
+            conn.disconnect();
+        }
+              
+        return num_cursos;
+    }
+
+//    @Override
+//    public List<Clases> listarCursosDocente(int idDocente) throws Exception {
+//        
+//        DataHostAccess credentials = new DataHostAccess();
+//        Conexion conn = new Conexion (credentials.getURLCrediantialsDB(),credentials.getLoginCredentialsDB(),credentials.getLoginCredentialsDB());
+//        
+//        String query = " SELECT c.id_clases as ID_CLASE, m.nombre as MATERIA, c.semestre as SEMESTRE ";
+//        query += " FROM MATERIAS m ";
+//        query += " INNER JOIN CLASES c ON c.id_materia = m.id_materia ";
+//        query += " WHERE c.id_docente = ?";
+//        
+//        
+//        
+//        List<Clases> _lista = null;
+//        
+//        try
+//        {
+//            PreparedStatement pstmt = conn.connect().prepareStatement(query);
+//            pstmt.setInt(1, idDocente);
+//            ResultSet rset = pstmt.executeQuery();
+//            _lista = datos_dashboard;
+//            
+//            while(rset.next())
+//            {
+//                
+//                Clases _clases = new Clases();
+//                Materia _materia = new Materia();
+//                _clases.setID_clases(rset.getInt("ID_CLASE"));
+//                _materia.setNombre(rset.getString("MATERIA"));
+//                _clases.setMateria(_materia);
+//                _clases.setSemestre_clase(rset.getInt("SEMESTRE"));
+//                _lista.add(_clases);
+//            }
+//            
+//        }catch(SQLException e)
+//        {
+//            throw e;
+//        } finally {
+//            conn.disconnect();
+//        }
+//        return _lista;
+//    }
+//    
+    
 
     
 

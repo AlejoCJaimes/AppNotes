@@ -30,5 +30,10 @@ public interface DocenteDao {
     
     List<Clases> listarDashboarDocente(int idDocente) throws Exception; //Nombre, ID_clase
     
+//    List<Clases> listarCursosDocente (int idDocente) throws Exception;
+    
     Docente obtenerDocente(int idPersona) throws Exception;
+    
+    int cursosDocente (int IdDocente) throws Exception;
+    
 }

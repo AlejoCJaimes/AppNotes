@@ -19,16 +19,17 @@ public class Notas extends Clases{
     //Constructor por defecto
     public Notas() {};
     
-    //Constructor con parámetros
+    //Constructor con parámetros//Constructor con parámetros
 
-    public Notas(int ID_nota, float corte, float calificacion, int ID_clases, String cod_carrera, String cargo, int ID_persona, String num_identificacion, String nombre, String apellido, int idUsuario, String correo, String clave, String fechaCreacion, int status, int idRol, String rol, int semestre_clase) {
-        super(ID_clases, cod_carrera, cargo, ID_persona, num_identificacion, nombre, apellido, idUsuario, correo, clave, fechaCreacion, status, idRol, rol, semestre_clase);
+    public Notas(int ID_nota, float corte, float calificacion, Carrera carrera, int ID_clases, String cod_carrera, String cargo, int ID_persona, String num_identificacion, String nombre, String apellido, int idUsuario, String correo, String clave, String fechaCreacion, int status, int idRol, String rol, int semestre_clase, int ID_curso) {
+        super(ID_clases, cod_carrera, cargo, ID_persona, num_identificacion, nombre, apellido, idUsuario, correo, clave, fechaCreacion, status, idRol, rol, semestre_clase, ID_curso);
         this.ID_nota = ID_nota;
         this.corte = corte;
         this.calificacion = calificacion;
+        this.carrera = carrera;
     }
-    //Getters and setters especiales
 
+    //Getters and setters especiales
     public Carrera getCarrera() {
         return carrera;
     }

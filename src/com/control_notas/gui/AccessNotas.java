@@ -6,6 +6,14 @@
  */
 package com.control_notas.gui;
 
+import com.control_notas.dao.DocenteDao;
+import com.control_notas.daoimpl.AuthenticationFilter;
+import com.control_notas.daoimpl.DocenteDaoImpl;
+import com.control_notas.daoimpl.FilterManager;
+import com.control_notas.daoimpl.Target;
+import com.control_notas.model.Docente;
+import com.control_notas.model.Usuario;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -14,47 +22,40 @@ import java.util.ArrayList;
  */
 public class AccessNotas {
 
-    private static ArrayList<String> materias;
-    private static ArrayList<Integer> nEstudiantes;
-    private static ArrayList<Integer> ubiSemestral;
+    
 
-    public static void main(String[] args) {
-        info();
-        jFramePrincipalDocente pDoc = new jFramePrincipalDocente(materias, nEstudiantes, ubiSemestral);
-        pDoc.setVisible(true);
+    public static void main(String[] args) throws Exception{
+        
+        //LOGIN JFRAME
+        jFrameLogin frmLogin = new jFrameLogin();
+        frmLogin.setVisible(true);
+        
+        
+        //_user.sendCredentials(username, password)
+        
+        
+        
+        
+        
+//        DocenteDao daoDoc = new DocenteDaoImpl();
+//
+//        //Instancia Docente
+//        Docente _doc;
+//        
+//        
+//        try {
+//         _doc = daoDoc.obtenerDocente(33);
+//         System.out.println(_doc.getNombre());
+//        }catch(SQLException e)
+//        {
+//            System.out.println(e);
+//        }
+        
+//        info();
+//        jFramePrincipalDocente pDoc = new jFramePrincipalDocente(materias, nEstudiantes, ubiSemestral);
+//        pDoc.setVisible(true);
     }
 
-    private static void info() {
-        materias = new ArrayList<>();
-        nEstudiantes = new ArrayList<>();
-        ubiSemestral = new ArrayList<>();
-
-        materias.add("Cálculo Diferencial");
-        materias.add("Cálculo Integral");
-        materias.add("Cálculo Multivaribale");
-        materias.add("Programación Orientada a Objetos");
-        materias.add("Programación WEB en JavaScript y Angular");
-        materias.add("Estadística y Probabilidad");
-        materias.add("Teoria de la Computación");
-        materias.add("Bases de Datos 2");
-
-        nEstudiantes.add(20);
-        nEstudiantes.add(10);
-        nEstudiantes.add(15);
-        nEstudiantes.add(20);
-        nEstudiantes.add(9);
-        nEstudiantes.add(15);
-        nEstudiantes.add(8);
-        nEstudiantes.add(4);
-
-        ubiSemestral.add(1);
-        ubiSemestral.add(2);
-        ubiSemestral.add(3);
-        ubiSemestral.add(2);
-        ubiSemestral.add(5);
-        ubiSemestral.add(2);
-        ubiSemestral.add(5);
-        ubiSemestral.add(6);
-    }
+  
 
 }

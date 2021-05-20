@@ -27,5 +27,8 @@ public interface UsuarioDao {
     List<Usuario> listarUsuarios() throws Exception;
 
     Usuario obtenerUsuario(int idUsuario) throws Exception;
-
+        
+    int actionLogin(String correoUsuario, String passUsuario) throws Exception;
+    
+    int obtenerIdPersona (String correoUsuario) throws Exception;
 }

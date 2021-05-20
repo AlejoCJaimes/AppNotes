@@ -97,7 +97,7 @@ public class EstudianteDaoImpl implements EstudianteDAO {
                 _est.setNum_semestre(rset.getInt("SEMESTRE"));
                 _est.setCod_carrera(rset.getString("COD_CARRERA"));
                 _est.setIdUsuario(rset.getInt("ID_USUARIO"));
-                ;
+                
             }
 
         } catch (SQLException e) {

@@ -161,4 +161,67 @@ public class UsuarioDaoImpl implements UsuarioDao {
         return _user;
     }
 
+    @Override
+    public int actionLogin(String correoUsuario, String passUsuario) throws Exception {
+        
+        
+        DataHostAccess credentials = new DataHostAccess();
+        Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
+
+        int idRolUsuario = 0;
+        
+        String query = "SELECT ID_ROL";
+        query += " FROM USUARIOS WHERE CORREO = ? AND CLAVE = ?";
+        try {
+
+            PreparedStatement pstmt = conn.connect().prepareStatement(query);
+            pstmt.setString(1, correoUsuario);
+            pstmt.setString(2, passUsuario);
+            
+            ResultSet rset = pstmt.executeQuery();
+            
+            while (rset.next()) {
+                idRolUsuario = rset.getInt("ID_ROL");
+            }
+
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            conn.disconnect();
+        }
+
+        return idRolUsuario;
+    }
+
+    @Override
+    public int obtenerIdPersona(String correoUsuario) throws Exception {
+         
+        DataHostAccess credentials = new DataHostAccess();
+        Conexion conn = new Conexion(credentials.getURLCrediantialsDB(), credentials.getLoginCredentialsDB(), credentials.getLoginCredentialsDB());
+
+        int idUsuario = 0;
+        
+        String query = "SELECT ID_USUARIO";
+        query += " FROM USUARIOS WHERE CORREO = ?";
+        try {
+
+            PreparedStatement pstmt = conn.connect().prepareStatement(query);
+            pstmt.setString(1, correoUsuario);
+            
+            
+            ResultSet rset = pstmt.executeQuery();
+            
+            while (rset.next()) {
+                idUsuario = rset.getInt("ID_USUARIO");
+            }
+
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            conn.disconnect();
+        }
+
+        return idUsuario;
+    }
+
 }

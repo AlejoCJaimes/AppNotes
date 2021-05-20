@@ -12,7 +12,7 @@ package com.control_notas.model;
 public class Clases extends Docente {
     
     //Atributos de clase
-    int ID_clases, semestre_clase;
+    int ID_clases, semestre_clase, ID_curso;
     String cod_carrera;
     
     //Atributos auxiliares
@@ -23,11 +23,23 @@ public class Clases extends Docente {
     public Clases () {};
     //Constructor con parámetros
 
-    public Clases(int ID_clases, String cod_carrera, String cargo, int ID_persona, String num_identificacion, String nombre, String apellido, int idUsuario, String correo, String clave, String fechaCreacion, int status, int idRol, String rol, int semestre_clase) {
+    public Clases(int ID_clases, String cod_carrera, String cargo, int ID_persona, String num_identificacion, 
+        String nombre, String apellido, int idUsuario, String correo, String clave, String fechaCreacion, 
+        int status, int idRol, String rol, int semestre_clase, int ID_curso) {
         super(cargo, ID_persona, num_identificacion, nombre, apellido, idUsuario, correo, clave, fechaCreacion, status, idRol, rol);
         this.ID_clases = ID_clases;
         this.cod_carrera = cod_carrera;
         this.semestre_clase = semestre_clase;
+        this.ID_curso = ID_curso;
+        
+    }
+
+    public int getID_curso() {
+        return ID_curso;
+    }
+
+    public void setID_curso(int ID_curso) {
+        this.ID_curso = ID_curso;
     }
     
     //Getters and Setters auxiliares
