@@ -5,14 +5,13 @@
  */
 package com.control_notas.gui;
 
-import com.control_notas.daoimpl.AuthenticationFilter;
-import com.control_notas.daoimpl.FilterManager;
-import com.control_notas.daoimpl.Target;
-import com.control_notas.model.Usuario;
+import com.control_notas.dao.UsuarioDao;
+import com.control_notas.daoimpl.UsuarioDaoImpl;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -91,22 +90,15 @@ public final class jFrameLogin extends JFrame implements ActionListener{
         }
 
         if (e.getSource().equals(loginButton)) {
-            //Filter
-            FilterManager filterManager = new FilterManager(new Target());
-            filterManager.setFilter(new AuthenticationFilter());
-        
-            Usuario _user = new Usuario();
-
-            //Apply Filter
-            _user.setFilterManager(filterManager);
+            
             try {
                 //Verify Access Credentials
-                if (_user.sendCredentials(userText, pwdText)) {
+                if (getFilterAccess(userText, pwdText)) {
                     clearJTextField();
                     this.dispose();
                     
                 } else {
-                    JOptionPane.showMessageDialog(this, "Invalid Username or Password");
+                    JOptionPane.showMessageDialog(this, "Usuario o Contraseña Incorrecta");
                 }
                 
                 //TERMINAR IMPLEMENTACION DE INTERCEPT
@@ -117,6 +109,42 @@ public final class jFrameLogin extends JFrame implements ActionListener{
 
     }
     
+    private boolean getFilterAccess(String correoUsuario, String passUsuario) throws Exception
+    {
+        int idRol = 0;
+        int idUsuario = 0;
+        //instance Usuario Dao
+        UsuarioDao _user = new UsuarioDaoImpl();
+        try
+        {
+          idRol = _user.actionLogin(correoUsuario, passUsuario);
+          idUsuario = _user.obtenerIdPersona(correoUsuario);
+        }catch(SQLException e)
+        {
+            System.out.println(e);
+        }
+        if (idRol == 1) {
+            
+            jFramePrincipalAdministrador frmAdministrador = new jFramePrincipalAdministrador(idUsuario);
+            frmAdministrador.setVisible(true);
+            
+            
+        }
+
+        if (idRol == 2) {
+            
+            jFramePrincipalDocente frmDocente = new jFramePrincipalDocente(idUsuario);
+            frmDocente.setVisible(true);
+            
+        }
+
+        if (idRol == 3) {
+            jFramePrincipalEstudiante frmEstudiante = new jFramePrincipalEstudiante(idUsuario);
+            frmEstudiante.setVisible(true);
+        }
+        
+        return true;
+    }
      private String getRelativeRute () {
         String ruta = ".\\src\\com\\control_notas\\gui\\images\\icon_application.png";
         return ruta;

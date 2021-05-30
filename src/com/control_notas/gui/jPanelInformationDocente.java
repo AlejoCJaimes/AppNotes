@@ -4,10 +4,13 @@ import com.control_notas.model.Docente;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -32,7 +35,19 @@ public class jPanelInformationDocente extends JPanel{
         //___________________________________________________________
         logout.setIcon(new ImageIcon(obtenerRutaIcono("icon_logout.png")));
         logout.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //___________________________________________________________
+
+        logout.addMouseListener(new MouseAdapter() {
+
+            @Override
+
+            public void mouseClicked(MouseEvent me) {
+               System.exit(0);
+             
+               jFrameLogin frm_login = new jFrameLogin();
+               frm_login.setVisible(true);
+            };
+        });
+            //___________________________________________________________
         box.add(imageUser);
         //___________________________________________________________
         JLabel correo = new JLabel("\n"+_doc.getCorreo());
@@ -109,4 +124,5 @@ public class jPanelInformationDocente extends JPanel{
                 this.getFont(), Color.WHITE));
         this.setVisible(true);
     }
+    
 }

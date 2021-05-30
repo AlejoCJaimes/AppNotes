@@ -1,7 +1,6 @@
 
 package com.control_notas.model;
 
-import com.control_notas.daoimpl.FilterManager;
 
 public class Usuario extends Rol {
     
@@ -68,16 +67,6 @@ public class Usuario extends Rol {
         this.status = status;
     }
     
-    //Métodos
-    FilterManager filterManager;
-
-   public void setFilterManager(FilterManager filterManager){
-      this.filterManager = filterManager;
-   }
-    
-   public boolean sendCredentials(String username, String password) throws Exception {
-        return filterManager.filterRequest(username, password);
-    }
     //Encriptar contraseña
     
     private String encriptarPassword()

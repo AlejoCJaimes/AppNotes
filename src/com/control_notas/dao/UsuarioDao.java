@@ -31,4 +31,6 @@ public interface UsuarioDao {
     int actionLogin(String correoUsuario, String passUsuario) throws Exception;
     
     int obtenerIdPersona (String correoUsuario) throws Exception;
+    
+    
 }
